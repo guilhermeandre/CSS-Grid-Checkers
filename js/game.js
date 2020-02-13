@@ -1,4 +1,7 @@
 
+var selected;
+var activePlayer = 0;
+var activeAction = "select";
 
 function isEven(n) {
   n = Number(n);
@@ -12,7 +15,7 @@ function Position(){
 
 class Man {
   constructor(n, pos ) {
-    this.n = n;
+    this.id = n;
     this.position = new Position();
     this.position.x = pos.x;
     this.position.y = pos.y;
@@ -46,10 +49,11 @@ for (let i = 0; i < 3; i++) {
       startX = (j*2)+1;
     }
 
-    setTimeout(() => {
+    // setTimeout(() => {
       board[startX][startY].classList.add("red");
-      redMen.push(new Man(redMen.length, {x:startX, y:startY}));
-    }, 200*(j+(i*4)));
+      redMen.push(new Man("red-"+redMen.length, { x:startX, y:startY }));
+      board[startX][startY].setAttribute("id", "red-"+redMen[redMen.length-1].id );
+    // }, 200*(j+(i*4)));
     
     
   }
@@ -70,10 +74,11 @@ for (let i = 0; i < 3; i++) {
     if (isEven(i+1)){
       startX = (j*2)+1;
     }
-    setTimeout(() => {
+    // setTimeout(() => {
       board[startX][startY].classList.add("white");
-      redMen.push(new Man(redMen.length, {x:startX, y:startY}));
-    }, 2600+ 200*(j+(i*4)));
+      whiteMen.push(new Man("white-"+whiteMen.length, {x:startX, y:startY}));
+      board[startX][startY].setAttribute("id", "white-"+whiteMen[whiteMen.length-1].id );
+    // }, 2600+ 200*(j+(i*4)));
     
   }
 }
@@ -82,3 +87,66 @@ for (let i = 0; i < 3; i++) {
 
 console.log(redMen)
 console.log(board)
+
+function select(target){
+  if(activePlayer === 0){
+    if(target.classList[1] != 'red'){
+      return console.log("Select a RED man!")
+    }
+  }else{
+    if(target.classList[1] != 'white'){
+      return console.log("Select a WHITE man!")
+    }
+  }
+  selected = target;
+  activeAction = "move";
+  console.log(activeAction);
+}
+
+
+
+function move(target) {
+  
+    let baseId;
+
+    if(activePlayer === 0){
+      baseId = 'red-';
+      baseClass = 'red';
+      activePlayer = 1;
+    }else{
+      baseId = "white-";
+      baseClass = 'white';
+      activePlayer = 0;
+    }
+
+    // let manId = selected.id.replace(baseId,'');
+    // manId=manId.replace(baseId,'');
+    // console.log(manId);
+
+    target.setAttribute('id', selected.id);
+    target.classList.add(baseClass);
+    selected.removeAttribute('id');
+    selected.classList.remove(baseClass);
+
+    activeAction = "select";
+  
+}
+
+
+document.addEventListener('click', function(e) {
+  e = e || window.event;
+  let target = e.target || e.srcElement,
+      text = target.textContent || target.innerText;   
+      
+      if(activeAction === "move"){
+        move(target);
+      }
+
+      if(activeAction === "select"){
+        select(target);
+      }
+
+      
+
+}, false);
+
