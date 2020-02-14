@@ -4,10 +4,12 @@ html{
 }
 main {
   margin: auto;
-  height: 60%;
-  width: 45em;
-  
+  height: 80%;
+  width: 40%;
+  transform: perspective(30em) rotateX(30deg) rotateZ(180deg);
+  transition: transform 2s;
 }
+
 
 .board {
   position: relative;
@@ -28,7 +30,7 @@ main {
 }
 
 .square.black{
-  background-color: #333;
+  background-color: #555;
 }
 
 .men {
@@ -47,11 +49,11 @@ main {
 }
 
 .man.red {
-  background-color: brown;
+  background-color: coral;
 }
 
 .man.white {
-  background-color: gray;
+  background-color: lightgray;
 }
 
 .movable {
