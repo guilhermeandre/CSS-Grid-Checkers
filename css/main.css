@@ -5,7 +5,7 @@ html{
 main {
   margin: auto;
   height: 60%;
-  width: 60%;
+  width: 45em;
   
 }
 
@@ -52,4 +52,10 @@ main {
 
 .man.white {
   background-color: gray;
+}
+
+.movable {
+  border-radius: 0;
+  background-color: black;
+  opacity: 50%;
 }
