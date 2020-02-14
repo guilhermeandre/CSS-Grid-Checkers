@@ -119,10 +119,11 @@ function checkIfMovable(selectedMan){
   //top-left
   if ( x > 0 && y > 0){
 
-    if ( board[x-1][y-1].classList.contains("empty")){
+    if ( board[x-1][y-1].classList.contains("empty") && activeAction!=="eating"){
       openCells.push(board[x-1][y-1]);
       openCells[openCells.length-1].hasEnemy = false;
     }else if(board[x-1][y-1].classList.contains(selected.enemy) && x > 1 && y >1 && board[x-2][y-2].classList.contains("empty")){
+      // activeAction = "eating";
       openCells.push(board[x-2][y-2]);
       openCells[openCells.length-1].hasEnemy = true;
       openCells[openCells.length-1].fallenEnemy = board[x-1][y-1];
@@ -133,10 +134,11 @@ function checkIfMovable(selectedMan){
    //top-right
    if ( x < 7 && y > 0){
 
-    if ( board[x+1][y-1].classList.contains("empty")){
+    if ( board[x+1][y-1].classList.contains("empty") && activeAction!=="eating"){
       openCells.push(board[x+1][y-1]);
       openCells[openCells.length-1].hasEnemy = false;
     }else if(board[x+1][y-1].classList.contains(selected.enemy) && x < 6 && y >1 && board[x+2][y-2].classList.contains("empty")){
+      // activeAction = "eating";
       openCells.push(board[x+2][y-2]);
       openCells[openCells.length-1].hasEnemy = true;
       openCells[openCells.length-1].fallenEnemy = board[x+1][y-1];
@@ -146,10 +148,11 @@ function checkIfMovable(selectedMan){
   //bottom-right
   if ( x < 7 && y < 7 ){
 
-    if ( board[x+1][y+1].classList.contains("empty")){
+    if ( board[x+1][y+1].classList.contains("empty") && activeAction!=="eating"){
       openCells.push(board[x+1][y+1]);
       openCells[openCells.length-1].hasEnemy = false;
     }else if(board[x+1][y+1].classList.contains(selected.enemy) && x < 6 && y < 6 && board[x+2][y+2].classList.contains("empty")){
+      // activeAction = "eating";
       openCells.push(board[x+2][y+2]);
       openCells[openCells.length-1].hasEnemy = true;
       openCells[openCells.length-1].fallenEnemy = board[x+1][y+1];
@@ -160,10 +163,11 @@ function checkIfMovable(selectedMan){
    //bottom-left
   if ( x > 0 && y < 7){
 
-    if ( board[x-1][y+1].classList.contains("empty")){
+    if ( board[x-1][y+1].classList.contains("empty") && activeAction!=="eating"){
       openCells.push(board[x-1][y+1]);
       openCells[openCells.length-1].hasEnemy = false;
     }else if(board[x-1][y+1].classList.contains(selected.enemy) && x > 1 && y < 6 && board[x-2][y+2].classList.contains("empty")){
+      // activeAction = "eating";
       openCells.push(board[x-2][y+2]);
       openCells[openCells.length-1].hasEnemy = true;
       openCells[openCells.length-1].fallenEnemy = board[x-1][y+1];

@@ -58,6 +58,6 @@ main {
 
 .movable {
   border-radius: 0;
-  background-color: black;
+  background-color: green;
   opacity: 50%;
 }
