@@ -33,12 +33,14 @@ A simple Checkers game made only with HTML/CSS for graphics and JavaScript for g
 -   Extra "eating" move after "eating" a Man.
 -   Remove fallen pieces.
 -   Score Tracking System
+-   Include Crowned King Man after reaching the board limit
+-   Enchanted 3D feel ( Pieces )
 
 ### To Do:
 -   ~~Prevents forbidden moves.~~
 -   ~~Extra "eating" move after "eating" a Man.~~
 -   ~~Remove fallen pieces.~~
--   Include Crowned King Man after reaching the board limit.
+-   ~~Include Crowned King Man after reaching the board limit.~~
 -   win Condition
 -   Reset button
 -   Brug tracking ( Chrome first board rotation )
@@ -48,7 +50,7 @@ A simple Checkers game made only with HTML/CSS for graphics and JavaScript for g
 ## Optional:
 ### Timing System:
 -   Time limit with new win condition.
--   Enchanted 3D feel ( Pieces and Board) 
+-  ~~Enchanted 3D feel ( Pieces )~~
 
 # Screenshots
 -   13/02/2019:

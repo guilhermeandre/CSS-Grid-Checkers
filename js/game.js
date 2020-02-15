@@ -118,21 +118,23 @@ function checkIfMovable(selectedMan){
   let y = selectedMan.pos.y;
 
   //top-left
-  if ( x > 0 && y > 0){
+  if( selectedMan.classList.contains("white") || ( selectedMan.classList.contains("king") ))
+    if ( x > 0 && y > 0){
 
-    if ( board[x-1][y-1].classList.contains("empty") && activeAction!=="eating"){
-      openCells.push(board[x-1][y-1]);
-      openCells[openCells.length-1].hasEnemy = false;
-    }else if(board[x-1][y-1].classList.contains(selected.enemy) && x > 1 && y >1 && board[x-2][y-2].classList.contains("empty")){
-      // activeAction = "eating";
-      openCells.push(board[x-2][y-2]);
-      openCells[openCells.length-1].hasEnemy = true;
-      openCells[openCells.length-1].fallenEnemy = board[x-1][y-1];
+      if ( board[x-1][y-1].classList.contains("empty") && activeAction!=="eating"){
+        openCells.push(board[x-1][y-1]);
+        openCells[openCells.length-1].hasEnemy = false;
+      }else if(board[x-1][y-1].classList.contains(selected.enemy) && x > 1 && y >1 && board[x-2][y-2].classList.contains("empty")){
+        // activeAction = "eating";
+        openCells.push(board[x-2][y-2]);
+        openCells[openCells.length-1].hasEnemy = true;
+        openCells[openCells.length-1].fallenEnemy = board[x-1][y-1];
+      }
+
     }
 
-  }
-
    //top-right
+  if( selectedMan.classList.contains("white") || ( selectedMan.classList.contains("king") ))
    if ( x < 7 && y > 0){
 
     if ( board[x+1][y-1].classList.contains("empty") && activeAction!=="eating"){
@@ -147,6 +149,7 @@ function checkIfMovable(selectedMan){
   }
 
   //bottom-right
+  if( selectedMan.classList.contains("red") || ( selectedMan.classList.contains("king") ))
   if ( x < 7 && y < 7 ){
 
     if ( board[x+1][y+1].classList.contains("empty") && activeAction!=="eating"){
@@ -162,6 +165,7 @@ function checkIfMovable(selectedMan){
   }
 
    //bottom-left
+  if( selectedMan.classList.contains("red") || ( selectedMan.classList.contains("king") ))
   if ( x > 0 && y < 7){
 
     if ( board[x-1][y+1].classList.contains("empty") && activeAction!=="eating"){
@@ -185,14 +189,22 @@ function checkIfMovable(selectedMan){
 }
 
 function select(target){
+
+  if(target.parentElement.classList.contains("man")){
+    target = target.parentElement;
+  }
+
+
   if(activePlayer === 0){
     target.enemy = "white";
-    if(target.classList[1] != 'red'){
+    if(!target.classList.contains('red')){
+      console.log(target);
       return console.log("Select a RED man!")
     }
   }else{
     target.enemy="red";
-    if(target.classList[1] != 'white'){
+    if(!target.classList.contains('white')){
+      console.log(target);
       return console.log("Select a WHITE man!")
     }
   }
@@ -207,18 +219,60 @@ function select(target){
 
 }
 
+function checkCoronation(target){
+
+  let coronationY = 0;
+
+  if(activePlayer === 0){
+    coronationY = 7;
+  }else{
+    coronationY = 0;
+  }
+
+  target.pos = findIndex2D(board, target);
+  if(target.pos.y === coronationY){
+    target.classList.add("king");
+  }
+  console.log("Coronation X:" + target.pos.x + "  Y:" +target.pos.y);
+
+}
+
 function changePlayer(){
   document.getElementById("player-"+(activePlayer+1)+"-score").classList.remove("active");  
+
+  shadowDir = "";
 
   if(activePlayer === 0){
     activePlayer = 1;
     document.getElementById("main").style.transform = "rotateZ(0deg) perspective(30em) rotateX(30deg)";
+    shadowDir = "-";
   }else{
     activePlayer = 0;
     document.getElementById("main").style.transform = "rotateZ(180deg) perspective(30em) rotateX(-30deg)";
+    shadowDir = "+";
   }
-  
+
   document.getElementById("player-"+(activePlayer+1)+"-score").classList.add("active");
+
+  arrangeShadows();
+    // child[0].style.cssText= "";
+  }
+
+  function arrangeShadows(){
+    let redMen = document.getElementsByClassName('red');
+    for (let i = 0; i < redMen.length; i++) {
+      redMen[i].style.cssText = "box-shadow: inset rgb(138, 70, 46) 0px "+shadowDir+"1vh;";
+      let child = redMen[i].children;
+      child[0].style.cssText = "top:"+(shadowDir)+"15%; box-shadow: inset rgb(138, 70, 46) 0px "+shadowDir+"1vh;";
+    }
+  
+    let whiteMen = document.getElementsByClassName('white');
+    for (let i = 0; i < whiteMen.length; i++) {
+      whiteMen[i].style.cssText= "box-shadow: inset rgb(122, 122, 122) 0px "+shadowDir+"1vh;";
+      let child = whiteMen[i].children;
+      child[0].style.cssText= "top:"+(shadowDir)+"15%; box-shadow: inset rgb(122, 122, 122) 0px "+shadowDir+"1vh;";
+  }
+
 }
 
 
@@ -228,6 +282,13 @@ function cleanMovableCells(){
   }
 
   openCells = [];
+
+  let emptyMen = document.getElementsByClassName('empty');
+  for (let i = 0; i < emptyMen.length; i++) {
+    let child = emptyMen[i].children;
+    child[0].style.cssText= "box-shadow:";
+    emptyMen[i].style.cssText= "box-shadow:";
+  }
 }
 
 
@@ -260,7 +321,13 @@ function move(target) {
       selected.removeAttribute('id');
       selected.classList.remove(baseClass);
 
+      if(selected.classList.contains("king")){
+        target.classList.add("king");
+        selected.classList.remove("king");
+      }
+
       cleanMovableCells();
+      checkCoronation(target);
 
       if(board[x][y].hasEnemy){
         console.log("EATING!");
@@ -271,12 +338,14 @@ function move(target) {
         score[activePlayer]++;
         document.getElementById("player-"+(activePlayer+1)+"-score").innerText = score[activePlayer];
         
+        cleanMovableCells();
 
         activeAction="eating";
         
         let plusMoves = checkIfMovable(target);
 
           if(plusMoves > 0 ){
+            arrangeShadows();
             console.log("Can eat more: " + plusMoves );
             select(target);
             // activeAction="move";
@@ -291,7 +360,7 @@ function move(target) {
         activeAction = "select";
         changePlayer();
       }
-
+      // cleanMovableCells();
       // board[newpos.x][newpos.y].innerText = "X";
 
       console.log(board);
