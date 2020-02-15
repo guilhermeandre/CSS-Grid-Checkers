@@ -13,7 +13,10 @@ A simple Checkers game made only with HTML/CSS for graphics and JavaScript for g
 -   No images
 -   No pre-made logic algorithms
 
-### Done:
+<hr>
+
+## Done:
+#### 13/02/20
 -   Board: Grid, black and white background color, hard coded.
 -   Men: Second Grid on top of Board, classes to define where to render each Man and what color. Id's for easy logic manipulation. Created and positioned by
 -   Board 2D Array.
@@ -22,21 +25,25 @@ A simple Checkers game made only with HTML/CSS for graphics and JavaScript for g
 -   Move Men by click.
 -   3D feel.
 -   Change players turn.
+#### 14/02/20
 -   Prevents moving the other player's Men.
 -   Highligth the possible moves.
-
-### To Do:
+#### 15/02/20
 -   Prevents forbidden moves.
 -   Extra "eating" move after "eating" a Man.
 -   Remove fallen pieces.
+-   Score Tracking System
+
+### To Do:
+-   ~~Prevents forbidden moves.~~
+-   ~~Extra "eating" move after "eating" a Man.~~
+-   ~~Remove fallen pieces.~~
 -   Include Crowned King Man after reaching the board limit.
 -   win Condition
 -   Reset button
 -   Brug tracking ( Chrome first board rotation )
-
-
--   ## Score Tracking System
--   ## Timing System
+-   ~~Score Tracking System~~
+-   Timing System
 
 ## Optional:
 ### Timing System:
@@ -51,3 +58,8 @@ A simple Checkers game made only with HTML/CSS for graphics and JavaScript for g
 -   14/02/2019:
 
 <img src="https://i.imgur.com/sp1DTK3.png" title="source: imgur.com" />
+
+-   15/02/2019:
+
+<a href="https://imgur.com/xKWEuPu"><img src="https://i.imgur.com/RPrDEdd.gif" title="source: imgur.com" /></a>
+

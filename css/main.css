@@ -7,7 +7,7 @@ main {
   height: 80%;
   width: 40%;
   transform: perspective(30em) rotateX(30deg) rotateZ(180deg);
-  transition: transform 2s;
+  transition: transform 0.5s;
 }
 
 
@@ -60,4 +60,8 @@ main {
   border-radius: 0;
   background-color: green;
   opacity: 50%;
+}
+
+.active {
+  background-color: cornflowerblue;
 }

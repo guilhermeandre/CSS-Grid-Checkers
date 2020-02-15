@@ -2,6 +2,7 @@
 var selected;
 var openCells = [];
 var activePlayer = 0;
+var score = [0,0]; 
 var activeAction = "select";
 
 function isEven(n) {
@@ -179,32 +180,7 @@ function checkIfMovable(selectedMan){
     openCells[i].classList.add("movable");
   }
 
-
-  // console.log(board[9][10].classList.contains("white"));
-
-  // if(selected.pos.x > 0 && selected.pos.y > 0){
-  //   if ( !board[selectedMan.pos.x-1][selectedMan.pos.y-1].classList.contains( "red") && !board[selectedMan.pos.x-1][selectedMan.pos.y-1].classList.contains( "white")){
-  //     board[selectedMan.pos.x-1][selectedMan.pos.y-1].classList.add("movable");
-  //   }
-  // }
-
-  // if(selected.pos.x < 7 && selected.pos.y > 0){
-  //   if ( !board[selectedMan.pos.x+1][selectedMan.pos.y-1].classList.contains( "red") && !board[selectedMan.pos.x+1][selectedMan.pos.y-1].classList.contains( "white")){
-  //     board[selectedMan.pos.x+1][selectedMan.pos.y-1].classList.add("movable");
-  //   }
-  // }
-  
-  // if(selected.pos.x < 7 && selected.pos.y < 7){
-  //   if ( !board[selectedMan.pos.x+1][selectedMan.pos.y+1].classList.contains( "red") && !board[selectedMan.pos.x+1][selectedMan.pos.y+1].classList.contains( "white")){
-  //     board[selectedMan.pos.x+1][selectedMan.pos.y+1].classList.add("movable");
-  //   }
-  // }
-
-  // if(selected.pos.x > 0 && selected.pos.y < 7){  
-  //   if ( !board[selectedMan.pos.x-1][selectedMan.pos.y+1].classList.contains( "red") && !board[selectedMan.pos.x-1][selectedMan.pos.y+1].classList.contains( "white")){
-  //     board[selectedMan.pos.x-1][selectedMan.pos.y+1].classList.add("movable");
-  //   }
-  // }  
+  return openCells.length;
 
 }
 
@@ -222,52 +198,58 @@ function select(target){
   }
   selected = target;
 
-  activeAction = "move";
+  if(activeAction !== "eating"){
+    activeAction = "move";
+  }
   console.log(activeAction);
 
   checkIfMovable(selected);
 
+}
 
+function changePlayer(){
+  document.getElementById("player-"+(activePlayer+1)+"-score").classList.remove("active");  
 
-
+  if(activePlayer === 0){
+    activePlayer = 1;
+    document.getElementById("main").style.transform = "rotateZ(0deg) perspective(30em) rotateX(30deg)";
+  }else{
+    activePlayer = 0;
+    document.getElementById("main").style.transform = "rotateZ(180deg) perspective(30em) rotateX(-30deg)";
+  }
+  
+  document.getElementById("player-"+(activePlayer+1)+"-score").classList.add("active");
 }
 
 
+function cleanMovableCells(){
+  for (let i = 0; i < openCells.length; i++) {
+    openCells[i].classList.remove("movable");
+  }
+
+  openCells = [];
+}
+
 
 function move(target) {
+
+  target.pos =  findIndex2D(board,target);
+  let x = target.pos.x;
+  let y = target.pos.y;
+
+
   
-  if(true ){
+  if(target.classList.contains("movable") ){
       let baseId;
 
       if(activePlayer === 0){
         baseId = 'red-';
         baseClass = 'red';
-        activePlayer = 1;
-        document.getElementById("main").style.transform = "rotateZ(0deg) perspective(30em) rotateX(30deg)";
 
       }else{
         baseId = "white-";
         baseClass = 'white';
-        activePlayer = 0;
-        document.getElementById("main").style.transform = "rotateZ(180deg) perspective(30em) rotateX(-30deg)";
       }
-
-      // let manId = selected.id.replace(baseId,'');
-      // manId=manId.replace(baseId,'');
-      // console.log(manId);
-
-      
-      
-      // setTimeout(() => {
-      //   let movableCells = document.getElementsByClassName("movable");
-
-      //    console.log(movableCells);
-      //   for(let i = 0; i < movableCells.length; i++ ){
-      //     movableCells[i].classList.remove("movable");
-      //   }
-        
-      // }, 100);
-
       
 
       target.setAttribute('id', selected.id);
@@ -278,19 +260,45 @@ function move(target) {
       selected.removeAttribute('id');
       selected.classList.remove(baseClass);
 
-      for (let i = 0; i < openCells.length; i++) {
-        openCells[i].classList.remove("movable");
+      cleanMovableCells();
+
+      if(board[x][y].hasEnemy){
+        console.log("EATING!");
+
+        board[x][y].fallenEnemy.classList.remove(selected.enemy);
+        board[x][y].fallenEnemy.removeAttribute("id");
+        board[x][y].fallenEnemy.classList.add("empty");
+        score[activePlayer]++;
+        document.getElementById("player-"+(activePlayer+1)+"-score").innerText = score[activePlayer];
+        
+
+        activeAction="eating";
+        
+        let plusMoves = checkIfMovable(target);
+
+          if(plusMoves > 0 ){
+            console.log("Can eat more: " + plusMoves );
+            select(target);
+            // activeAction="move";
+            
+          }else{
+            console.log("Can't eat anymore: " + plusMoves );
+            activeAction = "select";
+            changePlayer();
+          }
+        
+      }else{
+        activeAction = "select";
+        changePlayer();
       }
-
-      openCells = [];
-
-
-      activeAction = "select";
 
       // board[newpos.x][newpos.y].innerText = "X";
 
       console.log(board);
       
+  }else{
+    activeAction = "select";
+    cleanMovableCells();
   }    
 }
 
@@ -300,7 +308,7 @@ document.addEventListener('click', function(e) {
   let target = e.target || e.srcElement,
       text = target.textContent || target.innerText;   
       
-      if(activeAction === "move"){
+      if(activeAction === "move" || activeAction === "eating"){
         move(target);
       }
 
