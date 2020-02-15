@@ -3,6 +3,7 @@ var selected;
 var openCells = [];
 var activePlayer = 0;
 var score = [0,0]; 
+var timeTracker = [0,0];
 var activeAction = "select";
 
 function isEven(n) {
@@ -238,7 +239,7 @@ function checkCoronation(target){
 }
 
 function changePlayer(){
-  document.getElementById("player-"+(activePlayer+1)+"-score").classList.remove("active");  
+  document.getElementById("player-"+(activePlayer+1)).classList.remove("active");  
 
   shadowDir = "";
 
@@ -252,7 +253,7 @@ function changePlayer(){
     shadowDir = "+";
   }
 
-  document.getElementById("player-"+(activePlayer+1)+"-score").classList.add("active");
+  document.getElementById("player-"+(activePlayer+1)).classList.add("active");
 
   arrangeShadows();
     // child[0].style.cssText= "";
@@ -332,6 +333,8 @@ function move(target) {
       if(board[x][y].hasEnemy){
         console.log("EATING!");
 
+        checkWin();
+
         board[x][y].fallenEnemy.classList.remove(selected.enemy);
         board[x][y].fallenEnemy.removeAttribute("id");
         board[x][y].fallenEnemy.classList.add("empty");
@@ -389,3 +392,30 @@ document.addEventListener('click', function(e) {
 
 }, false);
 
+setInterval(() => {
+  timer();
+}, 1000);
+
+function timer(){
+  timeTracker[activePlayer]++;
+  // console.log(timeTracker[activePlayer]);
+  
+  let currentPlayerTimerDOM = document.getElementById("player-"+(activePlayer+1)).getElementsByClassName("time");
+  currentPlayerTimerDOM[0].innerHTML = secsToMinSecs(timeTracker[activePlayer]);
+}
+
+function secsToMinSecs(secs) {
+  var min = Math.floor(secs / 60);
+  var secs = (secs % 60).toFixed(0);
+  
+  
+  return min + ":" + (secs < 10 ? '0' : '') + secs;
+}
+
+
+// NOT WORKING
+function checkWin(){
+  if(score[activePlayer] >= 12) {
+    console.log("Player "+(activePlayer+1)+"Wins!!!");
+  }
+}

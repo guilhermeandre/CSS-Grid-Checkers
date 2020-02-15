@@ -35,6 +35,10 @@ A simple Checkers game made only with HTML/CSS for graphics and JavaScript for g
 -   Score Tracking System
 -   Include Crowned King Man after reaching the board limit
 -   Enchanted 3D feel ( Pieces )
+-   Timing System
+-   King free move
+-   Coronation only on final move
+
 
 ### To Do:
 -   ~~Prevents forbidden moves.~~
@@ -45,7 +49,7 @@ A simple Checkers game made only with HTML/CSS for graphics and JavaScript for g
 -   Reset button
 -   Brug tracking ( Chrome first board rotation )
 -   ~~Score Tracking System~~
--   Timing System
+-   ~~Timing System~~
 
 ## Optional:
 ### Timing System:
